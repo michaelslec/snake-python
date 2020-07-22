@@ -93,6 +93,52 @@ class Game():
                 x + 4, y + 4, Config.CELLSIZE - 8, Config.CELLSIZE - 8)
             pygame.draw.rect(self.screen, Config.GREEN, wormInnerSegmentRect)
 
+    def checkForKeyPress(self):
+        if len(pygame.event.get(pygame.QUIT)) > 0:
+            pygame.quit()
+
+        keyUpEvents = pygame.event.get(pygame.KEYUP)
+
+        if len(keyUpEvents) == 0:
+            return None
+
+        if keyUpEvents[0].key == pygame.K_ESCAPE:
+            pygame.quit()
+
+        return keyUpEvents[0].key
+
+    def isGameOver(self):
+        if (self.snake.wormCoords[self.snake.HEAD]['x'] == -1 or
+            self.snake.wormCoords[self.snake.HEAD]['x'] == Config.CELLWIDTH or
+            self.snake.wormCoords[self.snake.HEAD]['y'] == -1 or
+                self.snake.wormCoords[self.snake.HEAD]['y'] == Config.CELLHEIGHT):
+            return True
+
+        for wormBody in self.snake.wormCoords[1:]:
+            if wormBody['x'] == self.snake.wormCoords[self.snake.HEAD]['x'] and wormBody['y'] == self.snake.wormCoords[self.snake.HEAD]['y']:
+                return True
+
+    def displayGameOver(self):
+        gameOverFont = pygame.font.Font('freesansbold.ttf', 150)
+        gameSurf = gameOverFont.render('Game', True, Config.WHITE)
+        overSurf = gameOverFont.render('Over', True, Config.WHITE)
+        gameRect = gameSurf.get_rect()
+        overRect = overSurf.get_rect()
+        gameRect.midtop = (Config.WINDOW_WIDTH / 2, 10)
+        overRect.midtop = (Config.WINDOW_WIDTH / 2, gameRect.height + 10 + 25)
+        self.screen.blit(gameSurf, gameRect)
+        self.screen.blit(overSurf, overRect)
+
+        self.drawPressKeyMsg()
+        pygame.display.update()
+        pygame.time.wait(500)
+
+        self.checkForKeyPress()  # clear out any key presses in the event queue
+        while True:
+            if self.checkForKeyPress():
+                pygame.event.get()  # clear event queue
+                return
+
     def draw(self):
         # TODO: drawScore
         self.screen.fill(Config.BG_COLOR)
@@ -112,3 +158,7 @@ class Game():
 
             self.snake.update(self.apple)
             self.draw()
+            if self.isGameOver():
+                break
+
+        self.displayGameOver()
