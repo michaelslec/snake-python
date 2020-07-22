@@ -112,11 +112,19 @@ class Game():
             self.snake.wormCoords[self.snake.HEAD]['x'] == Config.CELLWIDTH or
             self.snake.wormCoords[self.snake.HEAD]['y'] == -1 or
                 self.snake.wormCoords[self.snake.HEAD]['y'] == Config.CELLHEIGHT):
-            return True
+            return self.resetGame()
 
         for wormBody in self.snake.wormCoords[1:]:
             if wormBody['x'] == self.snake.wormCoords[self.snake.HEAD]['x'] and wormBody['y'] == self.snake.wormCoords[self.snake.HEAD]['y']:
-                return True
+                return self.resetGame()
+
+    def resetGame(self):
+        del self.snake
+        del self.apple
+        self.snake = Snake()
+        self.apple = Apple()
+
+        return True
 
     def displayGameOver(self):
         gameOverFont = pygame.font.Font('freesansbold.ttf', 150)
