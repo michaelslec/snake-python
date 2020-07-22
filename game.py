@@ -56,11 +56,31 @@ class Game():
         self.screen.blit(pressKeySurf, pressKeyRect)
 
     def handleKeyEvents(self, event):
-        print(event)
+        if (event.key == pygame.K_LEFT or event.key == pygame.K_a) and self.snake.direction != self.snake.RIGHT:
+            direction = self.snake.LEFT
+        elif (event.key == pygame.K_RIGHT or event.key == pygame.K_d) and self.snake.direction != self.snake.LEFT:
+            direction = self.snake.RIGHT
+        elif (event.key == pygame.K_UP or event.key == pygame.K_w) and self.snake.direction != self.snake.DOWN:
+            direction = self.snake.UP
+        elif (event.key == pygame.K_DOWN or event.key == pygame.K_s) and self.snake.direction != self.snake.UP:
+            direction = self.snake.DOWN
+        elif event.key == pygame.K_ESCAPE:
+            pygame.quit()
+
+    def drawGrid(self):
+        for x in range(0, Config.WINDOW_WIDTH, Config.CELLSIZE):  # draw vertical lines
+            pygame.draw.line(self.screen, Config.DARKGRAY,
+                             (x, 0), (x, Config.WINDOW_HEIGHT))
+
+        for y in range(0, Config.WINDOW_HEIGHT, Config.CELLSIZE):  # draw horizontal lines
+            pygame.draw.line(self.screen, Config.DARKGRAY,
+                             (0, y), (Config.WINDOW_WIDTH, y))
 
     def draw(self):
-        print(self.apple.x)
-        print(self.apple.y)
+        self.screen.fill(Config.BG_COLOR)
+        self.drawGrid()
+        pygame.display.update()
+        self.clock.tick()
 
     def run(self):
         while True:
@@ -70,5 +90,5 @@ class Game():
                 elif event.type == pygame.KEYDOWN:
                     self.handleKeyEvents(event)
 
+            self.snake.update(self.apple)
             self.draw()
-            pygame.display.flip()
