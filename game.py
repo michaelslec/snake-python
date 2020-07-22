@@ -76,6 +76,12 @@ class Game():
             pygame.draw.line(self.screen, Config.DARKGRAY,
                              (0, y), (Config.WINDOW_WIDTH, y))
 
+    def drawApple(self):
+        x = self.apple.x * Config.CELLSIZE
+        y = self.apple.y * Config.CELLSIZE
+        appleRect = pygame.Rect(x, y, Config.CELLSIZE, Config.CELLSIZE)
+        pygame.draw.rect(self.screen, Config.RED, appleRect)
+
     def drawWorm(self):
         for coord in self.snake.wormCoords:
             x = coord['x'] * Config.CELLSIZE
@@ -88,9 +94,11 @@ class Game():
             pygame.draw.rect(self.screen, Config.GREEN, wormInnerSegmentRect)
 
     def draw(self):
+        # TODO: drawScore
         self.screen.fill(Config.BG_COLOR)
         self.drawGrid()
         self.drawWorm()
+        self.drawApple()
         pygame.display.update()
         self.clock.tick(Config.FPS)
 
