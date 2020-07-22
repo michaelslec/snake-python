@@ -26,7 +26,7 @@ class Game():
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
-                    self.run()
+                    return
             self.screen.fill(Config.BG_COLOR)
             rotatedSurf1 = pygame.transform.rotate(titleSurf1, degrees1)
             rotatedRect1 = rotatedSurf1.get_rect()
@@ -149,6 +149,12 @@ class Game():
         self.clock.tick(Config.FPS)
 
     def run(self):
+        self.showStartScreen()
+        
+        while True:
+            self.gameLoop()
+
+    def gameLoop(self):
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
