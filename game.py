@@ -44,8 +44,8 @@ class Game():
 
             pygame.display.update()
             self.clock.tick(Config.MENU_FPS)
-            degrees1 += 3  # rotate by 3 degrees each frame
-            degrees2 += 7  # rotate by 7 degrees each frame
+            degrees1 += 1  # rotate by 3 degrees each frame
+            degrees2 += 2  # rotate by 7 degrees each frame
 
     def drawPressKeyMsg(self):
         pressKeySurf = self.BASICFONT.render(
@@ -104,6 +104,7 @@ class Game():
 
         if keyUpEvents[0].key == pygame.K_ESCAPE:
             pygame.quit()
+            quit()
 
         return keyUpEvents[0].key
 
