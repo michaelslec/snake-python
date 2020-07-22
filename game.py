@@ -147,12 +147,20 @@ class Game():
                 pygame.event.get()  # clear event queue
                 return
 
+    def drawScore(self):
+        score = len(self.snake.wormCoords) - 3
+        scoreSurf = self.BASICFONT.render('Score: %s' % (score), True, Config.WHITE)
+        scoreRect = scoreSurf.get_rect()
+        scoreRect.topleft = (Config.WINDOW_WIDTH - 120, 10)
+        self.screen.blit(scoreSurf, scoreRect)
+
     def draw(self):
         # TODO: drawScore
         self.screen.fill(Config.BG_COLOR)
         self.drawGrid()
         self.drawWorm()
         self.drawApple()
+        self.drawScore()
         pygame.display.update()
         self.clock.tick(Config.FPS)
 
