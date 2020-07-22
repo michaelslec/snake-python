@@ -43,7 +43,7 @@ class Game():
             self.drawPressKeyMsg()
 
             pygame.display.update()
-            self.clock.tick(Config.FPS)
+            self.clock.tick(Config.MENU_FPS)
             degrees1 += 3  # rotate by 3 degrees each frame
             degrees2 += 7  # rotate by 7 degrees each frame
 

@@ -1,5 +1,6 @@
 class Config():
     FPS = 9
+    MENU_FPS = 40
     WINDOW_WIDTH = 640
     WINDOW_HEIGHT = 480
     CELLSIZE = 20
