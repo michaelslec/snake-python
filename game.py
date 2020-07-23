@@ -170,6 +170,7 @@ class Game():
         
         while True:
             self.gameLoop()
+            self.displayGameOver()
 
     def gameLoop(self):
         while True:
@@ -183,5 +184,3 @@ class Game():
             self.draw()
             if self.isGameOver():
                 break
-
-        self.displayGameOver()
