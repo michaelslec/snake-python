@@ -12,8 +12,8 @@ class Game():
         self.clock = pygame.time.Clock()
         self.BASICFONT = pygame.font.Font('freesansbold.ttf', 18)
         pygame.display.set_caption('Wormy')
-        self.apple = Apple()
         self.snake = Snake()
+        self.apple = Apple(self.snake)
 
     def showStartScreen(self):
         titleFont = pygame.font.Font('freesansbold.ttf', 100)
@@ -123,7 +123,7 @@ class Game():
         del self.snake
         del self.apple
         self.snake = Snake()
-        self.apple = Apple()
+        self.apple = Apple(self.snake)
 
         return True
 
@@ -156,7 +156,6 @@ class Game():
         self.screen.blit(scoreSurf, scoreRect)
 
     def draw(self):
-        # TODO: drawScore
         self.screen.fill(Config.BG_COLOR)
         self.drawGrid()
         self.drawWorm()

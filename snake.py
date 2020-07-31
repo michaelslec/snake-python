@@ -21,7 +21,7 @@ class Snake():
     def update(self, apple):
         # check if worm has eaten an apply
         if self.wormCoords[self.HEAD]['x'] == apple.x and self.wormCoords[self.HEAD]['y'] == apple.y:
-            apple.setNewLocation()
+            apple.setNewLocation(self)
         else:
             del self.wormCoords[-1]  # remove worm's tail segment
 
