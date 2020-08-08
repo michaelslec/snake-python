@@ -109,6 +109,9 @@ class Game():
         return keyUpEvents[0].key
 
     def isGameOver(self):
+        if len(self.snake.wormCoords) == Config.CELLHEIGHT * Config.CELLWIDTH:
+            return self.resetGame("win")
+
         if (self.snake.wormCoords[self.snake.HEAD]['x'] == -1 or
             self.snake.wormCoords[self.snake.HEAD]['x'] == Config.CELLWIDTH or
             self.snake.wormCoords[self.snake.HEAD]['y'] == -1 or
@@ -118,10 +121,6 @@ class Game():
         for wormBody in self.snake.wormCoords[1:]:
             if wormBody['x'] == self.snake.wormCoords[self.snake.HEAD]['x'] and wormBody['y'] == self.snake.wormCoords[self.snake.HEAD]['y']:
                 return self.resetGame("loss")
-        
-        if len(self.snake.wormCoords) == 53:
-            return self.resetGame("win")
-
         return (False,)
 
     def resetGame(self, game_state):
@@ -207,6 +206,8 @@ class Game():
             self.displayGameOver(game_state)
 
     def gameLoop(self):
+        self.draw()
+
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
