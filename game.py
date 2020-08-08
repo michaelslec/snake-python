@@ -112,22 +112,57 @@ class Game():
         if (self.snake.wormCoords[self.snake.HEAD]['x'] == -1 or
             self.snake.wormCoords[self.snake.HEAD]['x'] == Config.CELLWIDTH or
             self.snake.wormCoords[self.snake.HEAD]['y'] == -1 or
-                self.snake.wormCoords[self.snake.HEAD]['y'] == Config.CELLHEIGHT):
-            return self.resetGame()
+            self.snake.wormCoords[self.snake.HEAD]['y'] == Config.CELLHEIGHT):
+            return self.resetGame("loss")
 
         for wormBody in self.snake.wormCoords[1:]:
             if wormBody['x'] == self.snake.wormCoords[self.snake.HEAD]['x'] and wormBody['y'] == self.snake.wormCoords[self.snake.HEAD]['y']:
-                return self.resetGame()
+                return self.resetGame("loss")
+        
+        if len(self.snake.wormCoords) == Config.CELLWIDTH * Config.CELLHEIGHT:
+            return self.resetGame("win")
 
-    def resetGame(self):
+        return (False,)
+
+    def resetGame(self, game_state):
         del self.snake
         del self.apple
         self.snake = Snake()
         self.apple = Apple(self.snake)
 
-        return True
+        return (True, game_state)
+        
+    
+    def displayGameOver(self, game_state):
+        if game_state == "loss":
+            self.displayGameOverLoss()
+        else:
+            self.displayGameOverWin()
 
-    def displayGameOver(self):
+        
+    def displayGameOverWin(self):
+        gameOverFont = pygame.font.Font('freesansbold.ttf', 150)
+        gameSurf = gameOverFont.render('Win', True, Config.WHITE)
+        overSurf = gameOverFont.render('Over', True, Config.WHITE)
+        gameRect = gameSurf.get_rect()
+        overRect = overSurf.get_rect()
+        gameRect.midtop = (Config.WINDOW_WIDTH / 2, 10)
+        overRect.midtop = (Config.WINDOW_WIDTH / 2, gameRect.height + 10 + 25)
+        self.screen.blit(gameSurf, gameRect)
+        self.screen.blit(overSurf, overRect)
+
+        self.drawPressKeyMsg()
+        pygame.display.update()
+        pygame.time.wait(500)
+
+        self.checkForKeyPress()  # clear out any key presses in the event queue
+        while True:
+            if self.checkForKeyPress():
+                pygame.event.get()  # clear event queue
+                return
+        
+
+    def displayGameOverLoss(self):
         gameOverFont = pygame.font.Font('freesansbold.ttf', 150)
         gameSurf = gameOverFont.render('Game', True, Config.WHITE)
         overSurf = gameOverFont.render('Over', True, Config.WHITE)
@@ -168,8 +203,8 @@ class Game():
         self.showStartScreen()
         
         while True:
-            self.gameLoop()
-            self.displayGameOver()
+            game_state = self.gameLoop()
+            self.displayGameOver(game_state)
 
     def gameLoop(self):
         while True:
@@ -181,5 +216,6 @@ class Game():
 
             self.snake.update(self.apple)
             self.draw()
-            if self.isGameOver():
-                break
+            game_state = self.isGameOver()
+            if game_state[0]:
+                return game_state[1]
