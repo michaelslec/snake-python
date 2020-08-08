@@ -119,7 +119,7 @@ class Game():
             if wormBody['x'] == self.snake.wormCoords[self.snake.HEAD]['x'] and wormBody['y'] == self.snake.wormCoords[self.snake.HEAD]['y']:
                 return self.resetGame("loss")
         
-        if len(self.snake.wormCoords) == Config.CELLWIDTH * Config.CELLHEIGHT:
+        if len(self.snake.wormCoords) == 53:
             return self.resetGame("win")
 
         return (False,)
